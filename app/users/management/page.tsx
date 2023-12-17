@@ -1,30 +1,32 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Grid, Column, Tag, Breadcrumb, BreadcrumbItem, OverflowMenu, OverflowMenuItem } from "@carbon/react"
 import CustomTable from "@/components/CustomTable/CustomTable"
 import CTA from "@/components/CTA/CTA"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+
 
 const headers = [
     {
-        key: "userId",
+        key: "user_id",
         header: "ID"
     },
     {
-        key: "name",
-        header: "Name"
+        key: "email",
+        header: "Email"
     },
     {
         key: "type",
         header: "User type"
     },
     {
-        key: "dateCreated",
+        key: "date_created",
         header: "Date created"
     },
     {
-        key: "status",
-        header: "User status"
+        key: "user_type",
+        header: "User type"
     },
     {
         key: "actions",
@@ -57,21 +59,49 @@ const rows = [
 
 export default function UserManagement() {
 
-    const [ openModal, setOpenModal ] = useState<boolean>();
+    const [ openModal, setOpenModal ] = useState<boolean>()
+    const [ data, setData ] = useState<[]>()
+    const queryClient = useQueryClient()
 
-    return (
-        <Grid>
-            <Column lg={16} md={8} sm={4} className="page__banner">
-                <Breadcrumb>
-                    <BreadcrumbItem>
-                        <a href="/users">Users</a>
-                    </BreadcrumbItem>
-                </Breadcrumb>
-                <h1 className="page__heading">User management</h1>
-            </Column>
-            <Column lg={16} md={8} sm={4}>
-                <CustomTable rows={rows} headers={headers} search button={<CTA label="Create user" modalOpener={setOpenModal}/>}/>
-            </Column>
-        </Grid>
-    )
+    const query = useQuery({queryKey: ["users"], queryFn: async() => {
+        const req = await fetch("http://127.0.0.1:8000/users")
+        const res = await req.json()
+
+        if(!req.ok){
+            throw new Error("Error.")
+        }
+        if(req.status == 200){
+            return res
+        }
+    }})
+
+    useEffect(()=>{
+        setData(query.data)
+    }, [query])
+
+    if (query.isLoading){
+        return(
+            <p>Loading...</p>
+        )
+    }
+
+    if(query.data){
+        console.log(data)
+        return (
+            <Grid>
+                <Column lg={16} md={8} sm={4} className="page__banner">
+                    <Breadcrumb>
+                        <BreadcrumbItem>
+                            <a href="/users">Users</a>
+                        </BreadcrumbItem>
+                    </Breadcrumb>
+                    <h1 className="page__heading">User management</h1>
+                </Column>
+                <Column lg={16} md={8} sm={4}>
+                    <CustomTable rows={query.data} headers={headers} search button={<CTA label="Create user" modalOpener={setOpenModal}/>}/>
+                </Column>
+            </Grid>
+        )
+    }
+
 }
