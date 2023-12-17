@@ -32,14 +32,11 @@ export default function DashboardHeader() {
             isActive={isSideNavExpanded}
           />
           <Link href="/" passHref legacyBehavior>
-            <HeaderName prefix="PeoplesPay">Manufacturing</HeaderName>
+            <HeaderName prefix="GVIVE">Admin</HeaderName>
           </Link>
           <HeaderNavigation aria-label="Carbon Tutorial">
-            <Link href="/inventory" passHref legacyBehavior>
-              <HeaderMenuItem>Inventory</HeaderMenuItem>
-            </Link>
-            <Link href="/requests" passHref legacyBehavior>
-              <HeaderMenuItem>Requests</HeaderMenuItem>
+            <Link href="/home" passHref legacyBehavior>
+              <HeaderMenuItem>Overview</HeaderMenuItem>
             </Link>
           </HeaderNavigation>
           <SideNav
@@ -51,35 +48,15 @@ export default function DashboardHeader() {
           >
             <SideNavItems>
               <HeaderSideNavItems>
-                <Link href="/inventory" passHref legacyBehavior>
-                  <HeaderMenuItem>Inventory</HeaderMenuItem>
-                </Link>
-                <Link href="/requests" passHref legacyBehavior>
-                  <HeaderMenuItem>Requests</HeaderMenuItem>
+                <Link href="/home" passHref legacyBehavior>
+                  <HeaderMenuItem>Overview</HeaderMenuItem>
                 </Link>
               </HeaderSideNavItems>
               <SideNavLink href="/users/management" renderIcon={UserAccess}>
                 Users
               </SideNavLink>
-              <SideNavMenu renderIcon={BottlesContainer} title="Inventory">
-                <SideNavMenuItem href="/inventory">
-                  Home
-                </SideNavMenuItem>
-                <SideNavMenuItem href="/inventory/control">
-                  Inventory control
-                </SideNavMenuItem>
-                <SideNavMenuItem href="/inventory/management">
-                  Inventory management
-                </SideNavMenuItem>
-              </SideNavMenu>
-              <SideNavLink renderIcon={Report} href="/reports">
-                Reports
-              </SideNavLink>
               <SideNavLink renderIcon={List} href="/transactions">
                 Transactions
-              </SideNavLink>
-              <SideNavLink renderIcon={BuildTool} href="/setup">
-                Setup
               </SideNavLink>
             </SideNavItems>
           </SideNav>
